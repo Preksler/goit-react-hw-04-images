@@ -1,36 +1,29 @@
-import { Component } from "react";
+import { useState } from "react";
 import PropTypes from 'prop-types';
 import Modal from "components/Modal/Modal";
 import css from "./ImageGalleryItem.module.css";
 
-class ImageGalleryItem extends Component {
-    state = {
-        isModalOpen: false
+function ImageGalleryItem({ image, thumbnail, tags }) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
     }
 
-    toggleModal = () => {
-        this.setState(prevState => ({
-            isModalOpen: !prevState.isModalOpen
-        }));
-    }
-
-    render() {
-        const { image, thumbnail, tags } = this.props;
-        return (
-            <>
-                <li className={css.imageGalleryItem} onClick={this.toggleModal} >
-                    <img
-                        src={thumbnail}
-                        alt={tags}
-                        className={css.imageGalleryItem__image} />
-                </li>
-                {this.state.isModalOpen && <Modal
-                    image={image}
-                    tags={tags}
-                    onClose={this.toggleModal} />}
-            </>
-        )
-    }
+    return (
+        <>
+            <li className={css.imageGalleryItem} onClick={toggleModal} >
+                <img
+                    src={thumbnail}
+                    alt={tags}
+                    className={css.imageGalleryItem__image} />
+            </li>
+            {isModalOpen && <Modal
+                image={image}
+                tags={tags}
+                onClose={toggleModal} />}
+        </>
+    );
 }
 
 ImageGalleryItem.propTypes = {
